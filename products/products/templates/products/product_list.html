@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Product List</h1>
+
+    <form method="get">
+        <label for="min_price">Min Price:</label>
+        <input type="number" name="min_price" step="0.01" value="{{ request.GET.min_price|default:0 }}">
+        <label for="max_price">Max Price:</label>
+        <input type="number" name="max_price" step="0.01" value="{{ request.GET.max_price|default:100 }}">
+
+        <label for="size">Size:</label>
+        <select name="size">
+            <option value="">All</option>
+            {% for s in sizes %}
+                <option value="{{ s }}" {% if selected_size == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <h2>Price Segments</h2>
+    <ul>
+        {% for segment in price_segments %}
+            <li>{{ segment.0|floatformat:2 }} - {{ segment.1|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Products</h2>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }} - ${{ product.price }} - {{ product.size }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
